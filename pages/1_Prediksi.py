@@ -4,18 +4,25 @@ import numpy as np
 import pickle
 from functions.predict import predict
 
+ROOT_PATH = "./"
 
-st.title('Breast Cancer Prediction App')
+st.markdown("""
+<style>
+.center {
+    text-align: center;
 
-st.write("""
-This app predicts the **Breast Cancer** type!
-""")
+}
+</style>
+""", unsafe_allow_html=True)
+st.markdown('<h2 class="center">Aplikasi Prediksi Kanker Payudara</h2>',
+            unsafe_allow_html=True)
+
 st.write('---')
 
 
 @st.cache_resource
 def load_model():
-    with open('model/model_svm.pkl', 'rb') as file:
+    with open(ROOT_PATH + 'model/model_svm.pkl', 'rb') as file:
         model = pickle.load(file)
     return model
 
@@ -32,6 +39,7 @@ with col1:
         'Smootheness', min_value=0.052630, max_value=0.17, step=0.014064, value=0.096360)
     compactness_mean = st.number_input(
         'Compactness', min_value=0.019380, max_value=0.345400, step=0.052813, value=0.104341)
+    # select box for model type
 with col2:
     concativity_mean = st.number_input(
         'Concavity', min_value=0., max_value=0.426800, step=0.079720, value=0.088799)
@@ -42,7 +50,7 @@ with col2:
     fractal_dimension_mean = st.number_input(
         'Fractal Dimension', min_value=0.049960, max_value=0.097440, step=0.007060, value=0.062798)
 
-predict_button = st.button('Predict')
+predict_button = st.button('Prediksi')
 
 if predict_button:
     # create a dataframe
@@ -54,15 +62,14 @@ if predict_button:
                        'concave points_mean': concave_points_mean,
                        'symmetry_mean': symmetry_mean,
                        'fractal_dimension_mean': fractal_dimension_mean}, index=[0])
-    st.write(df)
     pred = predict(model, df)
     sub_col1, sub_col2, sub_col3 = st.columns(3)
     with sub_col1:
-        st.metric('Malignant', pred[0][0])
+        st.metric('Probabilitas Kanker :', pred[0][0])
     with sub_col2:
-        st.metric('Benign', pred[0][1])
+        st.metric('Probabilitas Sehat :', pred[0][1])
     with sub_col3:
         if np.argmax(pred) == 0:
-            st.metric('Prediction', 'Malignant')
+            st.metric('Prediksi :', 'Kanker')
         else:
-            st.metric('Prediction', 'Benign')
+            st.metric('Prediksi :', 'Sehat')
