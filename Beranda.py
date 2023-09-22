@@ -18,9 +18,10 @@ st.markdown('<h1 class="center">Aplikasi Prediksi Kanker Payudara Menggunakan Su
 # write html
 st.markdown("""
 <br><h4 class="center">Nama Pembuat:</h4>
-<p class="center">1. Nama 1</p>
-<p class="center">2. Nama 2</p>
-<p class="center">3. Nama 3</p>
+<p class="center">1. Puspita Kartikasari, S.Si., M.Si.</p>
+<p class="center">2. Iut Tri Utami, S.Si., M.Si.</p>
+<p class="center">3. Dra. Suparti, M.Si.</p>
+<p class="center">4. Syair Dafiq Faizur Rahman</p>
 """, unsafe_allow_html=True)
 
 st.markdown("""
